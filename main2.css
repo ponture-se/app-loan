@@ -1,11 +1,10 @@
 @font-face {
   font-family: icomoon;
-  src: url(/app/static/media/icomoon.1f40db11.eot);
-  src: url(/app/static/media/icomoon.1f40db11.eot#iefix)
-      format("embedded-opentype"),
-    url(/app/static/media/icomoon.990fae62.ttf) format("truetype"),
-    url(/app/static/media/icomoon.d35ff8b1.woff) format("woff"),
-    url(/app/static/media/icomoon.e355dacb.svg#icomoon) format("svg");
+  src: url(./assets/icomoon.1f40db11.eot);
+  src: url(./assets/icomoon.1f40db11.eot#iefix) format("embedded-opentype"),
+    url(./assets/icomoon.ttf) format("truetype"),
+    url(./assets/icomoon.d35ff8b1.woff) format("woff"),
+    url(./assets/icomoon.e355dacb.svg#icomoon) format("svg");
   font-weight: 400;
   font-style: normal;
 }
@@ -129,13 +128,13 @@
 
 @font-face {
   font-family: OpenSance;
-  src: url(/app/static/media/OpenSans-Regular.629a55a7.ttf);
+  src: url(./assets/OpenSans-Regular.ttf);
   font-weight: 700;
 }
 
 @font-face {
   font-family: OpenSanceBold;
-  src: url(/app/static/media/OpenSans-Semibold.33f225b8.ttf);
+  src: url(./assets/OpenSans-Semibold.ttf);
   font-weight: 700;
 }
 
