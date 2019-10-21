@@ -21,24 +21,26 @@
                                 <div class="pon_applyform">
                                     <div class="pon_form_header">
                                         <div class="pon_form_circleIcon"><i class="icon-request"></i></div><span>Ansök om företagslån</span></div>
-                                    <div class="pon_input --sliderInput animated fadeIn">
+                                    <div id="priceRange" class="pon_input --sliderInput animated fadeIn">
                                         <div class="pon_input_header">
-                                            <label class="pon_input_label pon_input_sliderLabel">Önskat Lånebelopp</label><span class="pon_input_label pon_input_sliderLabel loanAmountValue">3 500 000 kr</span></div>
+                                            <label class="pon_input_label pon_input_sliderLabel">Önskat Lånebelopp</label><span class="pon_input_label pon_input_sliderLabel loanAmountValue">3 500 000 kr</span>
+                                        </div>
                                         <div class="pon_rangeSliderDOM">
                                             <div class="rangeSliderDOM_left"><span class="icon-minus"></span></div>
                                             <div class="rangeSliderDOM_center">
-                                                <div aria-disabled="false" class="input-range"><span class="input-range_label input-range_label--min"><span class="input-range_label-container">100000 kr</span></span>
+                                                <div aria-disabled="false" class="input-range"><span class="input-range_label input-range_label--min"><span class="input-range_label-container">100 000 kr</span></span>
                                                     <div class="input-range_track input-range_track--background">
                                                         <div class="input-range_track input-range_track--active" style="left: 0%; width: 34.3434%;"></div><span class="input-range_slider-container" style="position: absolute; left: 34.3434%;"><span class="input-range_label input-range_label--value"><span class="input-range_label-container">3500000 kr</span></span>
                                                         <div aria-valuemax="10000000" aria-valuemin="100000" aria-valuenow="3500000" class="input-range_slider" draggable="false" role="slider" tabindex="0"></div>
                                                         </span>
-                                                    </div><span class="input-range_label input-range_label--max"><span class="input-range_label-container">10000000 kr</span></span>
+                                                    </div><span class="input-range_label input-range_label--max"><span class="input-range_label-container">10 000 000 kr</span></span>
                                                 </div>
                                             </div>
                                             <div class="rangeSliderDOM_right"><span class="icon-add"></span></div>
                                         </div>
                                     </div>
-                                    <div class="pon_input --sliderInput animated fadeIn">
+
+                                    <div id="monthRange"class="pon_input --sliderInput animated fadeIn">
                                         <div class="pon_input_header">
                                             <label class="pon_input_label pon_input_sliderLabel">Önskad låneperiod</label><span class="pon_input_label pon_input_sliderLabel loanAmountValue">23 månader</span></div>
                                         <div class="pon_rangeSliderDOM">
@@ -58,61 +60,15 @@
                                             <div class="rangeSliderDOM_right"><span class="icon-add"></span></div>
                                         </div>
                                     </div>
-                                    <div class="pon_input animated fadeIn">
+
+                                    <div id="usageOptions" class="pon_input usageOptions animated fadeIn">
                                         <label class="pon_input_label">Vad ska företagslånet användas till?<span>Om du har mer än en anledning till företagslån får du välja flera alternativ</span></label>
                                         <div class="options">
-                                            <div class="usageBtn ">
-                                                <div class="usageBtn_title">Anställa personal</div>
-                                            </div>
-                                            <div class="usageBtn ">
-                                                <div class="usageBtn_title">Förvärv Köp</div>
-                                            </div>
-                                            <div class="usageBtn ">
-                                                <div class="usageBtn_title">Expansion</div>
-                                            </div>
-                                            <div class="usageBtn ">
-                                                <div class="usageBtn_title">Finansiera skulder</div>
-                                            </div>
-                                            <div class="usageBtn ">
-                                                <div class="usageBtn_title">Betala av skulder</div>
-                                            </div>
-                                            <div class="usageBtn ">
-                                                <div class="usageBtn_title">Köp / hyra utrustning</div>
-                                            </div>
-                                            <div class="usageBtn ">
-                                                <div class="usageBtn_title">Inköp av företag</div>
-                                            </div>
-                                            <div class="usageBtn ">
-                                                <div class="usageBtn_title">Köp av lager</div>
-                                            </div>
-                                            <div class="usageBtn ">
-                                                <div class="usageBtn_title">Fastighetsfinansiering</div>
-                                            </div>
-                                            <div class="usageBtn ">
-                                                <div class="usageBtn_title">Renovering</div>
-                                            </div>
-                                            <div class="usageBtn ">
-                                                <div class="usageBtn_title">Hyra kontor</div>
-                                            </div>
-                                            <div class="usageBtn ">
-                                                <div class="usageBtn_title">Säsongsfinansiering</div>
-                                            </div>
-                                            <div class="usageBtn ">
-                                                <div class="usageBtn_title">Oväntade utgifter</div>
-                                            </div>
-                                            <div class="usageBtn ">
-                                                <div class="usageBtn_title">Marknadsföring</div>
-                                            </div>
-                                            <div class="usageBtn ">
-                                                <div class="usageBtn_title">Generell likviditet</div>
-                                            </div>
-                                            <div class="usageBtn --active">
-                                                <div class="usageBtn_title">Övrigt</div>
-                                                <div class="usageBtn_active"><span class="icon-checkmark"></span></div>
-                                            </div>
+                                           
                                         </div>
                                     </div>
-                                    <div class="pon_input animated fadeIn ">
+
+                                    <div id = "otherOption_input" class="pon_input otherOption_input animated fadeIn ">
                                         <label class="pon_input_label">Förklara vad?</label>
                                         <div class="pon_input_element">
                                             <div class="element-group">
@@ -122,6 +78,7 @@
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="pon_input animated fadeIn ">
                                         <label class="pon_input_label">Personnummer<span>Ange ditt svenska personnummer så att vi kan hitta ditt företag</span></label>
                                         <div class="pon_input_element">
@@ -137,9 +94,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="notifies">
-                        <div></div>
-                    </div>
                 </div>
+
+                <script type="text/javascript" src="./main.js"></script>
         </body>
 </html>

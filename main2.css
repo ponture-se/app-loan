@@ -1,14 +1,24 @@
 @font-face {
   font-family: icomoon;
-  src: url(./assets/icomoon.1f40db11.eot);
-  src: url(./assets/icomoon.1f40db11.eot#iefix) format("embedded-opentype"),
+  src: url(./assets/icomoon.eot);
+  src: url(./assets/icomoon.eot#iefix) format("embedded-opentype"),
     url(./assets/icomoon.ttf) format("truetype"),
-    url(./assets/icomoon.d35ff8b1.woff) format("woff"),
-    url(./assets/icomoon.e355dacb.svg#icomoon) format("svg");
+    url(./assets/icomoon.woff) format("woff"),
+    url(./assets/icomoon.svg#icomoon) format("svg");
   font-weight: 400;
   font-style: normal;
 }
+@font-face {
+  font-family: OpenSance;
+  src: url(./assets/OpenSans-Regular.ttf);
+  font-weight: 700;
+}
 
+@font-face {
+  font-family: OpenSanceBold;
+  src: url(./assets/OpenSans-Semibold.ttf);
+  font-weight: 700;
+}
 [class*=" icon-"],
 [class^="icon-"] {
   font-family: icomoon !important;
@@ -22,7 +32,15 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+.icon-request:before {
+  content: "\e904";
+}
+.icon-minus:before {
+  content: "\e931";
+}
+.icon-add:before {
+  content: "\e92e";
+}
 .fadeIn {
   -webkit-animation-name: fadeIn;
   animation-name: fadeIn;
@@ -126,18 +144,6 @@
   background: var(--my-btn-success-hover-bg);
 }
 
-@font-face {
-  font-family: OpenSance;
-  src: url(./assets/OpenSans-Regular.ttf);
-  font-weight: 700;
-}
-
-@font-face {
-  font-family: OpenSanceBold;
-  src: url(./assets/OpenSans-Semibold.ttf);
-  font-weight: 700;
-}
-
 * {
   box-sizing: border-box;
 }
@@ -233,18 +239,6 @@ html::-moz-scrollbar-thumb:hover {
   transition: 1s ease-in-out;
   transition-duration: 0.3s;
 }
-
-.notifies {
-  position: fixed;
-  top: 0;
-  width: 370px;
-  right: 0;
-  display: flex;
-  flex-direction: column;
-  padding: 10px 20px;
-  z-index: 100000000000;
-}
-
 .input-range * {
   direction: ltr;
   text-align: left;
@@ -448,6 +442,11 @@ html::-moz-scrollbar-thumb:hover {
 .pon_input_element .element-group_center .my-input {
   border: none;
   height: 100%;
+  width: 100%;
+  padding: 0 5px;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  outline-color: #42ccad;
 }
 
 .pon_input_element .element-group_right {
@@ -498,7 +497,31 @@ html::-moz-scrollbar-thumb:hover {
 .bl .options .usageBtn.--active {
   border: 2px solid #42ccad;
 }
-
+.bl .options .usageBtn.--active:before {
+  font-family: icomoon !important;
+  content: "\ea10";
+  color: white;
+  font-size: 15px;
+  display: block;
+  width: 27px;
+  height: 27px;
+  position: absolute;
+  left: -10px;
+  top: -10px;
+  text-align: center;
+  background-color: #42ccad;
+  border-radius: 50%;
+  -webkit-transition-duration: 0.2s;
+  transition-duration: 0.2s;
+  font-style: normal;
+  font-weight: 400;
+  -webkit-font-feature-settings: normal;
+  font-feature-settings: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+}
 .bl .options .usageBtn_active {
   position: absolute;
   left: -10px;
@@ -512,6 +535,9 @@ html::-moz-scrollbar-thumb:hover {
   width: 27px;
   height: 27px;
   border-radius: 100%;
+}
+.bl .pon_input.otherOption_input {
+  display: none;
 }
 
 .bl .bankIdBtn {
