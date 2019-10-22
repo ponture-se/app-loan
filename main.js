@@ -81,23 +81,40 @@ var usageObj = [
     writable: true
   }
 ];
+var priceStepsObj = [
+  { from: 100000, to: 200000, step: 15000 },
+  { from: 200000, to: 400000, step: 25000 },
+  { from: 400000, to: 1000000, step: 50000 },
+  { from: 1000000, to: 5000000, step: 75000 },
+  { from: 5000000, to: 7500000, step: 100000 },
+  { from: 7500000, to: 10000000, step: 125000 }
+];
 document.addEventListener("DOMContentLoaded", function() {
-  fillUsageOptions(usageObj);
-  rangeSlider("priceRange");
-  rangeSlider("monthRange");
   var defaultOption = document.getElementsByClassName("-defaultOption");
   var activeUsages = document.querySelectorAll(".usageBtn.--active");
   var usageBtns = document.getElementsByClassName("usageBtn");
+  fillUsageOptions(usageObj);
+  selectDefaultOption(activeUsages, defaultOption);
+  rangeSlider("priceRange", priceStepsObj, function(price) {
+    price = price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1 ");
+    document.querySelector("#priceRange .loanAmountValue").innerText =
+      price + " kr";
+  });
+  rangeSlider("monthRange", "", function(month) {
+    if (month === "36") month = "+36 månader";
+    else if (parseInt(month) === 1) month = month + " månad";
+    else month = month + " månader";
+    document.querySelector("#monthRange .loanAmountValue").innerText = month;
+  });
   for (var i = 0; i < usageBtns.length; i++) {
     usageBtns[i].onclick = function() {
       toggleOption(this);
     };
   }
-  selectDefaultOption(activeUsages, defaultOption);
 });
 
 //functions
-function toggleOption(e) {
+function toggleOption(e,callback) {
   e.classList.toggle("--active");
   var activeUsages = document.querySelectorAll(".usageBtn.--active");
   var defaultOption = document.getElementsByClassName("-defaultOption");
@@ -114,7 +131,7 @@ function toggleOption(e) {
 function selectDefaultOption(activeOptions, defaultOptionDOM) {
   if (activeOptions.length === 0) {
     toggleOption(defaultOptionDOM[0]);
-  } 
+  }
 }
 function fillUsageOptions(optionsObj) {
   var optionsContainer = document.querySelector("#usageOptions .options");
@@ -138,38 +155,32 @@ function fillUsageOptions(optionsObj) {
     optionsContainer.appendChild(parent);
   }
 }
-function submitForm() {}
-function rangeSlider(rangeIndicator, stepSluts) {
+
+//stepSluts: [{from:"",to:"",step:""},...]
+rangeSlider.prototype.next = function() {};
+function rangeSlider(rangeIndicator, stepSluts = [], callback = function() {}) {
   var mousedown = false;
   var rangeIndicator = document.getElementById(rangeIndicator);
   var inputRangeSlider = rangeIndicator.querySelector(".input-range_slider");
-  var stepMode = "static";
-  if (Array.isArray(stepSluts) && stepSluts.length > 1) {
-    stepMode = "dynamic";
-  }
   var min = inputRangeSlider.getAttribute("aria-valuemin");
   var max = inputRangeSlider.getAttribute("aria-valuemax");
-
   var amountElement = rangeIndicator.querySelector(".loanAmountValue");
   var sliderElement = rangeIndicator.querySelector(
-      ".input-range_slider-container"
-    ),
-    sliderTrack = rangeIndicator.querySelector(".input-range_track--active "),
-    sliderTrackBG = rangeIndicator.querySelector(".rangeSliderDOM_center"),
-    x = 0,
-    y = 0,
-    mousedown = false;
-
+    ".input-range_slider-container"
+  );
+  var sliderTrack = rangeIndicator.querySelector(".input-range_track--active ");
+  var sliderTrackBG = rangeIndicator.querySelector(".rangeSliderDOM_center");
+  var step;
+  if (typeof stepSluts !== "object" || stepSluts.length === 0) {
+    stepSluts = [];
+  }
   sliderElement.addEventListener(
     "mousedown",
     function(e) {
       mousedown = true;
-      x = sliderElement.offsetLeft - e.clientX;
-      y = sliderElement.offsetTop - e.clientY;
     },
     true
   );
-
   document.addEventListener(
     "mouseup",
     function(e) {
@@ -177,7 +188,25 @@ function rangeSlider(rangeIndicator, stepSluts) {
     },
     true
   );
-
+  var _updateSlider = function(move, oldAmount, newAmount) {
+    if (stepSluts.length > 0) {
+      var amountRange = max - min;
+      for (var i = 0; i < stepSluts.length; i++) {
+        if (stepSluts[i].from <= newAmount && stepSluts[i].to > newAmount) {
+          var stepBaseAmount = Math.round(
+            Number(newAmount) / Number(stepSluts[i].step)
+          );
+          newAmount = stepBaseAmount * stepSluts[i].step;
+          move = newAmount / amountRange;
+        }
+      }
+    }
+    sliderTrack.style.width = Number(Math.ceil(move * 100)) + "%";
+    sliderElement.style.left = Number(Math.ceil(move * 100)) + "%";
+    inputRangeSlider.setAttribute("aria-valuenow", newAmount);
+    amountElement.innerText = newAmount;
+    callback(newAmount);
+  };
   document.addEventListener(
     "mousemove",
     function(e) {
@@ -185,14 +214,44 @@ function rangeSlider(rangeIndicator, stepSluts) {
         e.clientX - sliderTrackBG.offsetLeft - sliderElement.offsetLeft;
       var newLeftPosition =
         (sliderElement.offsetLeft + moveX) / sliderTrackBG.clientWidth;
-      var amount = 0;
-      if (mousedown && newLeftPosition < 1 && newLeftPosition > 0) {
-        amount = Number(min) + parseInt((max - min) * newLeftPosition);
-        sliderTrack.style.width = Number(newLeftPosition * 100) + "%";
-        sliderElement.style.left = Number(newLeftPosition * 100) + "%";
-        amountElement.innerText = amount + "kr";
+      var newAmount = 0;
+      var oldAmount = inputRangeSlider.getAttribute("aria-valuenow");
+      if (mousedown) {
+        if (newLeftPosition < 1 && newLeftPosition > 0) {
+          newAmount = Number(min) + parseInt((max - min) * newLeftPosition);
+          _updateSlider(newLeftPosition, oldAmount, newAmount);
+        } else if (newLeftPosition === 1) {
+          newAmount = max;
+          _updateSlider(1, oldAmount, newAmount);
+        } else if (newLeftPosition === 0) {
+          newAmount = min;
+          _updateSlider(0, oldAmount, newAmount);
+        }
       }
     },
     true
   );
+}
+
+var organizationValidation = function(number) {
+  number = String(number).trim();
+  if (number) {
+    if (number.length !== 10 || Number(number)) {
+      return "Ange ditt korrekta Organisationsnummer exampel : 556016-0451)";
+    } else {
+      return "";
+    }
+  } else {
+    return "Organisations nummer krävs";
+  }
+};
+
+function submitForm() {
+  var range = document.getElementsByName("priceRange")[0];
+  var month = document.getElementsByName("monthRange")[0];
+  var options = document.querySelector("#usageOptions .usageBtn");
+  var optionsDescription = document.getElementsByName("otherOptionDescription")[0].value;
+  var organizationNumber = document.getElementsByName("organizationNumber")[0].value;
+  if (organizationValidation()) {
+  }
 }

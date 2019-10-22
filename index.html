@@ -31,7 +31,7 @@
                                                 <div aria-disabled="false" class="input-range"><span class="input-range_label input-range_label--min"><span class="input-range_label-container">100 000 kr</span></span>
                                                     <div class="input-range_track input-range_track--background">
                                                         <div class="input-range_track input-range_track--active" style="left: 0%; width: 34.3434%;"></div><span class="input-range_slider-container" style="position: absolute; left: 34.3434%;"><span class="input-range_label input-range_label--value"><span class="input-range_label-container">3500000 kr</span></span>
-                                                        <div aria-valuemax="10000000" aria-valuemin="100000" aria-valuenow="3500000" class="input-range_slider" draggable="false" role="slider" tabindex="0"></div>
+                                                        <div name="priceRange" aria-valuemax="10000000" aria-valuemin="100000" aria-valuenow="3500000" class="input-range_slider" draggable="false" role="slider" tabindex="0"></div>
                                                         </span>
                                                     </div><span class="input-range_label input-range_label--max"><span class="input-range_label-container">10 000 000 kr</span></span>
                                                 </div>
@@ -51,7 +51,7 @@
                                                     <div class="input-range_track input-range_track--background">
                                                         <div class="input-range_track input-range_track--active" style="left: 0%; width: 62.8571%;"></div><span class="input-range_slider-container" style="position: absolute; left: 62.8571%;"><span class="input-range_label input-range_label--value"><span class="input-range_label-container">23 
                                             mån</span></span>
-                                                        <div aria-valuemax="36" aria-valuemin="1" aria-valuenow="23" class="input-range_slider" draggable="false" role="slider" tabindex="0"></div>
+                                                        <div name="monthRange" aria-valuemax="36" aria-valuemin="1" aria-valuenow="23" class="input-range_slider" draggable="false" role="slider" tabindex="0"></div>
                                                         </span>
                                                     </div><span class="input-range_label input-range_label--max"><span class="input-range_label-container">+36 
                                             mån</span></span>
@@ -73,23 +73,23 @@
                                         <div class="pon_input_element">
                                             <div class="element-group">
                                                 <div class="element-group_center">
-                                                    <input type="text" class="my-input" value="test">
+                                                    <input type="text" name="otherOptionDescription" class="my-input" value="test">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="pon_input animated fadeIn ">
-                                        <label class="pon_input_label">Personnummer<span>Ange ditt svenska personnummer så att vi kan hitta ditt företag</span></label>
+                                        <label class="pon_input_label">Organisationsnummer<span>Ange ditt svenska personnummer så att vi kan hitta ditt företag</span></label>
                                         <div class="pon_input_element">
                                             <div class="element-group">
                                                 <div class="element-group_center">
-                                                    <input type="text" class="my-input" placeholder="exempel:19800101-1234" maxlength="13" value="">
+                                                    <input type="text" class="my-input" name="organizationNumber" placeholder="exempel:556016-0451" maxlength="13" value="">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <button class="btn --success --large bankIdBtn"><span>Identifiera med BankID</span></button>
+                                    <button class="btn --success --large bankIdBtn" onClick="submitForm()"><span>Ansök</span></button>
                                 </div>
                             </div>
                         </div>
