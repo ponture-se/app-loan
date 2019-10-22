@@ -175,6 +175,13 @@ function rangeSlider(rangeIndicator, stepSluts = [], callback = function() {}) {
     stepSluts = [];
   }
   sliderElement.addEventListener(
+    "touchstart",
+    function(e) {
+      mousedown = true;
+    },
+    true
+  );
+  sliderElement.addEventListener(
     "mousedown",
     function(e) {
       mousedown = true;
@@ -188,15 +195,22 @@ function rangeSlider(rangeIndicator, stepSluts = [], callback = function() {}) {
     },
     true
   );
-  var _updateSlider = function(move, oldAmount, newAmount) {
-    if (stepSluts.length > 0) {
+  document.addEventListener(
+    "touchend",
+    function(e) {
+      mousedown = false;
+    },
+    true
+  );
+  var _updateSlider = function(move, oldAmount, newAmount, stepsObj) {
+    if (stepsObj.length > 0) {
       var amountRange = max - min;
-      for (var i = 0; i < stepSluts.length; i++) {
-        if (stepSluts[i].from <= newAmount && stepSluts[i].to > newAmount) {
+      for (var i = 0; i < stepsObj.length; i++) {
+        if (stepsObj[i].from <= newAmount && stepsObj[i].to > newAmount) {
           var stepBaseAmount = Math.round(
-            Number(newAmount) / Number(stepSluts[i].step)
+            Number(newAmount) / Number(stepsObj[i].step)
           );
-          newAmount = stepBaseAmount * stepSluts[i].step;
+          newAmount = stepBaseAmount * stepsObj[i].step;
           move = newAmount / amountRange;
         }
       }
@@ -207,27 +221,42 @@ function rangeSlider(rangeIndicator, stepSluts = [], callback = function() {}) {
     amountElement.innerText = newAmount;
     callback(newAmount);
   };
+  var _detectPosition = function(e, isTouch) {
+    var x;
+    if (isTouch) {
+      x = e.touches[0].clientX;
+    } else {
+      x = e.clientX;
+    }
+    var moveX = x - sliderTrackBG.offsetLeft - sliderElement.offsetLeft;
+    var newLeftPosition =
+      (sliderElement.offsetLeft + moveX) / sliderTrackBG.clientWidth;
+    var newAmount = 0;
+    var oldAmount = inputRangeSlider.getAttribute("aria-valuenow");
+    if (mousedown) {
+      if (newLeftPosition < 1 && newLeftPosition > 0) {
+        newAmount = Number(min) + parseInt((max - min) * newLeftPosition);
+        _updateSlider(newLeftPosition, oldAmount, newAmount, stepSluts);
+      } else if (newLeftPosition === 1) {
+        newAmount = max;
+        _updateSlider(1, oldAmount, newAmount, []);
+      } else if (newLeftPosition <= 0) {
+        newAmount = min;
+        _updateSlider(0, oldAmount, newAmount, []);
+      }
+    }
+  };
   document.addEventListener(
     "mousemove",
     function(e) {
-      var moveX =
-        e.clientX - sliderTrackBG.offsetLeft - sliderElement.offsetLeft;
-      var newLeftPosition =
-        (sliderElement.offsetLeft + moveX) / sliderTrackBG.clientWidth;
-      var newAmount = 0;
-      var oldAmount = inputRangeSlider.getAttribute("aria-valuenow");
-      if (mousedown) {
-        if (newLeftPosition < 1 && newLeftPosition > 0) {
-          newAmount = Number(min) + parseInt((max - min) * newLeftPosition);
-          _updateSlider(newLeftPosition, oldAmount, newAmount);
-        } else if (newLeftPosition === 1) {
-          newAmount = max;
-          _updateSlider(1, oldAmount, newAmount);
-        } else if (newLeftPosition === 0) {
-          newAmount = min;
-          _updateSlider(0, oldAmount, newAmount);
-        }
-      }
+      _detectPosition(e, false);
+    },
+    true
+  );
+  document.addEventListener(
+    "touchmove",
+    function(e) {
+      _detectPosition(e, true);
     },
     true
   );
