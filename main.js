@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function() {
     document.querySelector("#priceRange .loanAmountValue").innerText =
       price + " kr";
   });
-  rangeSlider("monthRange", "", function(month) {
+  rangeSlider("monthRange", [{ from: 1, to: 36, step: 1 }], function(month) {
     if (month === "36") month = "+36 månader";
     else if (parseInt(month) === 1) month = month + " månad";
     else month = month + " månader";
@@ -114,7 +114,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 //functions
-function toggleOption(e,callback) {
+function toggleOption(e, callback) {
   e.classList.toggle("--active");
   var activeUsages = document.querySelectorAll(".usageBtn.--active");
   var defaultOption = document.getElementsByClassName("-defaultOption");
@@ -247,11 +247,16 @@ var organizationValidation = function(number) {
 };
 
 function submitForm() {
-  var range = document.getElementsByName("priceRange")[0];
-  var month = document.getElementsByName("monthRange")[0];
+  var range = document
+    .getElementsByName("priceRange")[0]
+    .getAttribute("aria-valuenow");
+  var month = document
+    .getElementsByName("monthRange")[0]
+    .getAttribute("aria-valuenow");
   var options = document.querySelector("#usageOptions .usageBtn");
-  var optionsDescription = document.getElementsByName("otherOptionDescription")[0].value;
-  var organizationNumber = document.getElementsByName("organizationNumber")[0].value;
-  if (organizationValidation()) {
-  }
+  var optionsDescription = document.getElementsByName(
+    "otherOptionDescription"
+  )[0].value;
+  var organizationNumber = document.getElementsByName("organizationNumber")[0]
+    .value;
 }
