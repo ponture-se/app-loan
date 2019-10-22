@@ -114,7 +114,7 @@ function toggleOption(e) {
 function selectDefaultOption(activeOptions, defaultOptionDOM) {
   if (activeOptions.length === 0) {
     toggleOption(defaultOptionDOM[0]);
-  }
+  } 
 }
 function fillUsageOptions(optionsObj) {
   var optionsContainer = document.querySelector("#usageOptions .options");
@@ -142,7 +142,15 @@ function submitForm() {}
 function rangeSlider(rangeIndicator, stepSluts) {
   var mousedown = false;
   var rangeIndicator = document.getElementById(rangeIndicator);
+  var inputRangeSlider = rangeIndicator.querySelector(".input-range_slider");
+  var stepMode = "static";
+  if (Array.isArray(stepSluts) && stepSluts.length > 1) {
+    stepMode = "dynamic";
+  }
+  var min = inputRangeSlider.getAttribute("aria-valuemin");
+  var max = inputRangeSlider.getAttribute("aria-valuemax");
 
+  var amountElement = rangeIndicator.querySelector(".loanAmountValue");
   var sliderElement = rangeIndicator.querySelector(
       ".input-range_slider-container"
     ),
@@ -176,10 +184,13 @@ function rangeSlider(rangeIndicator, stepSluts) {
       var moveX =
         e.clientX - sliderTrackBG.offsetLeft - sliderElement.offsetLeft;
       var newLeftPosition =
-        ((sliderElement.offsetLeft + moveX) / sliderTrackBG.clientWidth) * 100;
-      if (mousedown && newLeftPosition < 100 && newLeftPosition > 0) {
-        sliderTrack.style.width = newLeftPosition + "%";
-        sliderElement.style.left = newLeftPosition + "%";
+        (sliderElement.offsetLeft + moveX) / sliderTrackBG.clientWidth;
+      var amount = 0;
+      if (mousedown && newLeftPosition < 1 && newLeftPosition > 0) {
+        amount = Number(min) + parseInt((max - min) * newLeftPosition);
+        sliderTrack.style.width = Number(newLeftPosition * 100) + "%";
+        sliderElement.style.left = Number(newLeftPosition * 100) + "%";
+        amountElement.innerText = amount + "kr";
       }
     },
     true
