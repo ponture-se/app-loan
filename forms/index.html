@@ -20,20 +20,20 @@
                             <div class="pon_form">
                                 <div class="pon_applyform">
                                     <div class="pon_form_header">
-                                        <div class="pon_form_circleIcon"><i class="icon-request"></i></div><span>Ansök om företagslån</span></div>
+                                        <div class="pon_form_circleIcon "><i class="icon-request"></i></div><span class="-unselectableText">Ansök om företagslån</span></div>
                                     <div id="priceRange" class="pon_input --sliderInput animated fadeIn">
                                         <div class="pon_input_header">
-                                            <label class="pon_input_label pon_input_sliderLabel">Önskat Lånebelopp</label><span class="pon_input_label pon_input_sliderLabel loanAmountValue">3 500 000 kr</span>
+                                            <label class="pon_input_label pon_input_sliderLabel -unselectableText">Önskat Lånebelopp</label><span class="pon_input_label pon_input_sliderLabel loanAmountValue -unselectableText">3 500 000 kr</span>
                                         </div>
                                         <div class="pon_rangeSliderDOM">
                                             <div class="rangeSliderDOM_left" onClick="priceRange.stepBack()"><span class="icon-minus"></span></div>
                                             <div class="rangeSliderDOM_center">
-                                                <div aria-disabled="false" class="input-range"><span class="input-range_label input-range_label--min"><span class="input-range_label-container">100 000 kr</span></span>
+                                                <div aria-disabled="false" class="input-range"><span class="input-range_label input-range_label--min"><span class="input-range_label-container -unselectableText">100 000 kr</span></span>
                                                     <div class="input-range_track input-range_track--background">
                                                         <div class="input-range_track input-range_track--active" style="left: 0%; width: 34.3434%;"></div><span class="input-range_slider-container" style="position: absolute; left: 34.3434%;"><span class="input-range_label input-range_label--value"><span class="input-range_label-container">3500000 kr</span></span>
                                                         <div name="priceRange" aria-valuemax="10000000" aria-valuemin="100000" aria-valuenow="3500000" class="input-range_slider" draggable="false" role="slider" tabindex="0"></div>
                                                         </span>
-                                                    </div><span class="input-range_label input-range_label--max"><span class="input-range_label-container">10 000 000 kr</span></span>
+                                                    </div><span class="input-range_label input-range_label--max"><span class="input-range_label-container -unselectableText">10 000 000 kr</span></span>
                                                 </div>
                                             </div>
                                             <div class="rangeSliderDOM_right" onClick="priceRange.stepForward()"><span class="icon-add"></span></div>
@@ -42,46 +42,46 @@
 
                                     <div id="monthRange"class="pon_input --sliderInput animated fadeIn">
                                         <div class="pon_input_header">
-                                            <label class="pon_input_label pon_input_sliderLabel">Önskad låneperiod</label><span class="pon_input_label pon_input_sliderLabel loanAmountValue">23 månader</span></div>
+                                            <label class="pon_input_label pon_input_sliderLabel -unselectableText">Önskad låneperiod</label><span class="pon_input_label pon_input_sliderLabel loanAmountValue -unselectableText">23 månader</span></div>
                                         <div class="pon_rangeSliderDOM">
-                                            <div class="rangeSliderDOM_left" onClick="monthRange.stepBack()"><span class="icon-minus"></span></div>
+                                            <div class="rangeSliderDOM_left" onClick="monthRange.stepBack()"><span class="icon-minus -unselectableText"></span></div>
                                             <div class="rangeSliderDOM_center">
-                                                <div aria-disabled="false" class="input-range"><span class="input-range_label input-range_label--min"><span class="input-range_label-container">1 
+                                                <div aria-disabled="false" class="input-range"><span class="input-range_label input-range_label--min"><span class="input-range_label-container -unselectableText">1 
                                             mån</span></span>
                                                     <div class="input-range_track input-range_track--background">
-                                                        <div class="input-range_track input-range_track--active" style="left: 0%; width: 62.8571%;"></div><span class="input-range_slider-container" style="position: absolute; left: 62.8571%;"><span class="input-range_label input-range_label--value"><span class="input-range_label-container">23 
+                                                        <div class="input-range_track input-range_track--active" style="left: 0%; width: 62.8571%;"></div><span class="input-range_slider-container" style="position: absolute; left: 62.8571%;"><span class="input-range_label input-range_label--value"><span class="input-range_label-container -unselectableText">23 
                                             mån</span></span>
                                                         <div name="monthRange" aria-valuemax="36" aria-valuemin="1" aria-valuenow="23" class="input-range_slider" draggable="false" role="slider" tabindex="0"></div>
                                                         </span>
-                                                    </div><span class="input-range_label input-range_label--max"><span class="input-range_label-container">+36 
+                                                    </div><span class="input-range_label input-range_label--max"><span class="input-range_label-container -unselectableText">+36 
                                             mån</span></span>
                                                 </div>
                                             </div>
-                                            <div class="rangeSliderDOM_right" onClick="monthRange.stepForward()"><span class="icon-add"></span></div>
+                                            <div class="rangeSliderDOM_right" onClick="monthRange.stepForward()"><span class="icon-add -unselectableText"></span></div>
                                         </div>
                                     </div>
 
                                     <div id="usageOptions" class="pon_input usageOptions animated fadeIn">
-                                        <label class="pon_input_label">Vad ska företagslånet användas till?<span>Om du har mer än en anledning till företagslån får du välja flera alternativ</span></label>
+                                        <label class="pon_input_label -unselectableText">Vad ska företagslånet användas till?<span class="-unselectableText">Om du har mer än en anledning till företagslån får du välja flera alternativ</span></label>
                                         <div class="options">
                                             <!-- options goes here -->
                                         </div>
                                     </div>
 
                                     <div id = "otherOption_input" class="pon_input otherOption_input animated fadeIn ">
-                                        <label class="pon_input_label">Förklara vad?</label>
+                                        <label class="pon_input_label -unselectableText">Förklara vad?</label>
                                         <div class="pon_input_element">
                                             <div class="element-group">
                                                 <div class="element-group_center">
                                                     <input type="text" name="otherOptionDescription" class="my-input" value="">
                                                 </div>
                                             </div>
-                                            <span class="validation-message">Beskriv övrig anledning till företagslån</span>
+                                            <span class="validation-message -unselectableText">Beskriv övrig anledning till företagslån</span>
                                         </div>
                                     </div>
 
                                     <div id = "organizationNumber_input" class="pon_input animated fadeIn ">
-                                        <label class="pon_input_label">Organisationsnummer<span>Ange ditt svenska personnummer så att vi kan hitta ditt företag</span></label>
+                                        <label class="pon_input_label -unselectableText">Organisationsnummer<span class="-unselectableText">Ange ditt svenska personnummer så att vi kan hitta ditt företag</span></label>
                                         <div class="pon_input_element">
                                             <div class="element-group">
                                                 <div class="element-group_center">
@@ -91,7 +91,7 @@
                                             <span class="validation-message"></span>
                                         </div>
                                     </div>
-                                    <button class="btn --success --large bankIdBtn" onClick="submitForm()"><span>Ansök</span></button>
+                                    <button class="btn --success --large bankIdBtn -unselectableText" onClick="submitForm()"><span>Ansök</span></button>
                                 </div>
                             </div>
                         </div>

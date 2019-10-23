@@ -104,7 +104,7 @@ var monthRange = new rangeSlider(
   "monthRange",
   [{ from: 1, to: 36, step: 1 }],
   function(month) {
-    if (month === "36") month = "+36 månader";
+    if (month === 36) month = "+36 månader";
     else if (parseInt(month) === 1) month = month + " månad";
     else month = month + " månader";
     document.querySelector("#monthRange .loanAmountValue").innerText = month;
@@ -160,8 +160,8 @@ function rangeSlider(rangeIndicator, stepSluts = [], callback = function() {}) {
   var mousedown = false;
   var rangeIndicator = document.getElementById(rangeIndicator);
   var inputRangeSlider = rangeIndicator.querySelector(".input-range_slider");
-  var min = inputRangeSlider.getAttribute("aria-valuemin");
-  var max = inputRangeSlider.getAttribute("aria-valuemax");
+  var min = parseInt(inputRangeSlider.getAttribute("aria-valuemin"));
+  var max = parseInt(inputRangeSlider.getAttribute("aria-valuemax"));
   var now = inputRangeSlider.getAttribute("aria-valuenow");
   var amountElement = rangeIndicator.querySelector(".loanAmountValue");
   var sliderElement = rangeIndicator.querySelector(
@@ -201,37 +201,38 @@ function rangeSlider(rangeIndicator, stepSluts = [], callback = function() {}) {
     },
     true
   );
-  function _updateSlider(newAmount, stepsObj, forceUpdate) {
-    var amountRange = max - min;
+
+  var _updateSlider = function(newAmount, stepsObj, forceUpdate) {
+    var amountRange = max;
+    var minMove = min / amountRange;
+    var maxMove = (max - min) / amountRange;
+    var move = 0;
+    var step = minMove;
+
     if (stepsObj.length > 0) {
       for (var i = 0; i < stepsObj.length; i++) {
         if (stepsObj[i].from <= newAmount && stepsObj[i].to > newAmount) {
-          var stepBaseAmount = Math.round(
-            Number(newAmount) / Number(stepsObj[i].step)
-          );
-          newAmount = stepBaseAmount * stepsObj[i].step;
-          nextAmount = (stepBaseAmount + 1) * stepsObj[i].step;
-          prevAmount = (stepBaseAmount - 1) * stepsObj[i].step;
+          step = stepsObj[i].step;
+          var stepBaseAmount = Math.round(Number(newAmount) / Number(step));
+          newAmount = stepBaseAmount * step;
+          if (newAmount < max) nextAmount = (stepBaseAmount + 1) * step;
+          if (newAmount > min) prevAmount = (stepBaseAmount - 1) * step;
         }
       }
     }
-    var move = newAmount / amountRange;
-    if (move >= 1) move = 1;
-    if (move <= 0) move = 0;
-    sliderTrack.style.width = Number(Math.ceil(move * 100)) + "%";
-    sliderElement.style.left = Number(Math.ceil(move * 100)) + "%";
+    if (newAmount > min) move = Math.trunc((newAmount / amountRange) * 98);
+    sliderTrack.style.width = move + "%";
+    sliderElement.style.left = move + "%";
     inputRangeSlider.setAttribute("aria-valuenow", newAmount);
     amountElement.innerText = newAmount;
     rangeSlider.stepBack = function() {
-      console.log("range element: ", this);
-      _updateSlider(prevAmount, stepsObj, true);
+      if (newAmount !== min) _updateSlider(newAmount - step, stepSluts, true);
     };
     rangeSlider.stepForward = function() {
-      console.log("range element: ", this);
-      _updateSlider(nextAmount, stepsObj, true);
+      if (newAmount !== max) _updateSlider(newAmount + step, stepSluts, true);
     };
     callback(newAmount);
-  }
+  };
   function _detectPosition(e, isTouch) {
     var x;
     if (isTouch) {
@@ -244,13 +245,13 @@ function rangeSlider(rangeIndicator, stepSluts = [], callback = function() {}) {
       (sliderElement.offsetLeft + moveX) / sliderTrackBG.clientWidth;
     var newAmount = 0;
     if (mousedown) {
-      if (newLeftPosition <= 1 && newLeftPosition > 0) {
+      if (newLeftPosition <= 1 && newLeftPosition >= 0) {
         newAmount = Number(min) + parseInt((max - min) * newLeftPosition);
         _updateSlider(newAmount, stepSluts, false);
-      } else if (newLeftPosition >= 1) {
+      } else if (newLeftPosition > 1) {
         newAmount = max;
         _updateSlider(newAmount, stepSluts, false);
-      } else if (newLeftPosition <= 0) {
+      } else if (newLeftPosition < 0) {
         newAmount = min;
         _updateSlider(newAmount, stepSluts, false);
       }
@@ -288,7 +289,7 @@ var organizationValidation = function(number) {
 
 function submitForm() {
   var isFormValidArr = [];
-  var url = "https://ponture.com/app/loan";
+  var url = "https://www.ponture.com/app/loan";
   var price = document
     .getElementsByName("priceRange")[0]
     .getAttribute("aria-valuenow");

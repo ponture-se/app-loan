@@ -45,7 +45,12 @@
   -webkit-animation-name: fadeIn;
   animation-name: fadeIn;
 }
-
+.-unselectableText {
+  -webkit-user-select: none; /* Chrome all / Safari all */
+  -moz-user-select: none; /* Firefox all */
+  -ms-user-select: none; /* IE 10+ */
+  user-select: none; /* Likely future */
+}
 .animated {
   -webkit-animation-duration: 1s;
   animation-duration: 1s;
@@ -394,9 +399,9 @@ html::-moz-scrollbar-thumb:hover {
   background: #42ccad;
   background: var(--input-range-bg);
   border: 1px solid grey;
-  width: 27px !important;
-  height: 27px !important;
-  margin-top: -0.9rem;
+  width: 28px !important;
+  height: 28px !important;
+  margin-top: -1rem;
 }
 
 .pon_input.--sliderInput .pon_rangeSliderDOM .input-range_label--value {
