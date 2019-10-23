@@ -99,9 +99,7 @@ var priceRange = new rangeSlider("priceRange", priceStepsObj, function(price) {
   document.querySelector("#priceRange .loanAmountValue").innerText =
     price + " kr";
 });
-function next() {
-  priceRange.next();
-}
+
 var monthRange = new rangeSlider(
   "monthRange",
   [{ from: 1, to: 36, step: 1 }],
@@ -112,10 +110,7 @@ var monthRange = new rangeSlider(
     document.querySelector("#monthRange .loanAmountValue").innerText = month;
   }
 );
-function nextMonth() {}
-function prevMonth() {}
-function nextPrice() {}
-function prevPrice() {}
+
 //functions
 function toggleOption(e, callback) {
   e.classList.toggle("--active");
@@ -228,9 +223,11 @@ function rangeSlider(rangeIndicator, stepSluts = [], callback = function() {}) {
     inputRangeSlider.setAttribute("aria-valuenow", newAmount);
     amountElement.innerText = newAmount;
     rangeSlider.stepBack = function() {
+      console.log("range element: ", this);
       _updateSlider(prevAmount, stepsObj, true);
     };
     rangeSlider.stepForward = function() {
+      console.log("range element: ", this);
       _updateSlider(nextAmount, stepsObj, true);
     };
     callback(newAmount);
@@ -280,8 +277,6 @@ var organizationValidation = function(number) {
   number = String(number).trim();
   if (number) {
     if (number.length !== 10 || Number(number) === "NaN") {
-      console.log(number.length);
-      console.log(number.length);
       return "Ange ditt korrekta Organisationsnummer (exampel : 5560160451)";
     } else {
       return "";
@@ -303,8 +298,8 @@ function submitForm() {
   var options = optionsArr;
   var otherDescription = document.getElementsByName(
     "otherOptionDescription"
-    )[0];
-    var otherDescElem = document.getElementById("otherOption_input");
+  )[0];
+  var otherDescElem = document.getElementById("otherOption_input");
   var organizationNumber = document.getElementsByName("organizationNumber")[0];
   var organNumberElem = document.getElementById("organizationNumber_input");
   ///////////////////// validations
