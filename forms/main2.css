@@ -98,7 +98,31 @@
   cursor: no-drop;
   opacity: 0.5 !important;
 }
+.formInput.--invalid .elementTitle {
+  color: red !important;
+}
 
+.formInput.--invalid .element {
+  outline: none;
+  box-shadow: none;
+  border: 1px solid red !important;
+}
+
+.formInput.--invalid .elementInfo {
+  color: red !important;
+}
+.pon_input.--invalid .my-input {
+  outline: none;
+  border: 1px solid red !important;
+}
+.pon_input .validation-message {
+  display: none;
+}
+.pon_input.--invalid .validation-message {
+  display: block;
+  color: red;
+  font-size: 12px;
+}
 .btn {
   font-family: OpenSance;
   border-radius: 3px;

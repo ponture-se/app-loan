@@ -82,55 +82,57 @@ var usageObj = [
   }
 ];
 var priceStepsObj = [
-  { from: 100000, to: 200000, step: 15000 },
-  { from: 200000, to: 400000, step: 25000 },
-  { from: 400000, to: 1000000, step: 50000 },
-  { from: 1000000, to: 5000000, step: 75000 },
-  { from: 5000000, to: 7500000, step: 100000 },
-  { from: 7500000, to: 10000000, step: 125000 }
+  { from: 100000, to: 500000, step: 20000 },
+  { from: 500000, to: 3000000, step: 50000 },
+  { from: 3000000, to: 7000000, step: 100000 },
+  { from: 7000000, to: 10000000, step: 125000 }
 ];
-document.addEventListener("DOMContentLoaded", function() {
-  var defaultOption = document.getElementsByClassName("-defaultOption");
-  var activeUsages = document.querySelectorAll(".usageBtn.--active");
-  var usageBtns = document.getElementsByClassName("usageBtn");
-  fillUsageOptions(usageObj);
-  selectDefaultOption(activeUsages, defaultOption);
-  rangeSlider("priceRange", priceStepsObj, function(price) {
-    price = price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1 ");
-    document.querySelector("#priceRange .loanAmountValue").innerText =
-      price + " kr";
-  });
-  rangeSlider("monthRange", [{ from: 1, to: 36, step: 1 }], function(month) {
+//data
+var optionsArr = ["general_liquidity"];
+// array prototype remove/////////////////////////////////////////////////////////////////
+
+var activeUsages = document.querySelectorAll(".usageBtn.--active");
+var usageBtns = document.getElementsByClassName("usageBtn");
+
+var priceRange = new rangeSlider("priceRange", priceStepsObj, function(price) {
+  price = price.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1 ");
+  document.querySelector("#priceRange .loanAmountValue").innerText =
+    price + " kr";
+});
+function next() {
+  priceRange.next();
+}
+var monthRange = new rangeSlider(
+  "monthRange",
+  [{ from: 1, to: 36, step: 1 }],
+  function(month) {
     if (month === "36") month = "+36 månader";
     else if (parseInt(month) === 1) month = month + " månad";
     else month = month + " månader";
     document.querySelector("#monthRange .loanAmountValue").innerText = month;
-  });
-  for (var i = 0; i < usageBtns.length; i++) {
-    usageBtns[i].onclick = function() {
-      toggleOption(this);
-    };
   }
-});
-
+);
+function nextMonth() {}
+function prevMonth() {}
+function nextPrice() {}
+function prevPrice() {}
 //functions
 function toggleOption(e, callback) {
   e.classList.toggle("--active");
   var activeUsages = document.querySelectorAll(".usageBtn.--active");
   var defaultOption = document.getElementsByClassName("-defaultOption");
-  if (e.classList.contains("-writable") && e.classList.contains("--active")) {
+  var selected = e.classList.contains("--active");
+  if (e.classList.contains("-writable") && selected) {
     document.getElementById("otherOption_input").style.display = "block";
-  } else if (
-    e.classList.contains("-writable") &&
-    !e.classList.contains("--active")
-  ) {
+  } else if (e.classList.contains("-writable") && !selected) {
     document.getElementById("otherOption_input").style.display = "none";
   }
   selectDefaultOption(activeUsages, defaultOption);
+  if (typeof callback === "function") callback(e, selected);
 }
 function selectDefaultOption(activeOptions, defaultOptionDOM) {
   if (activeOptions.length === 0) {
-    toggleOption(defaultOptionDOM[0]);
+    defaultOptionDOM[0].click();
   }
 }
 function fillUsageOptions(optionsObj) {
@@ -147,6 +149,7 @@ function fillUsageOptions(optionsObj) {
     parent.classList.add("usageBtn");
     if (optionsObj[i].isDefault) {
       parent.classList.add("-defaultOption");
+      parent.classList.add("--active");
     }
     if (optionsObj[i].writable) {
       parent.classList.add("-writable");
@@ -157,13 +160,14 @@ function fillUsageOptions(optionsObj) {
 }
 
 //stepSluts: [{from:"",to:"",step:""},...]
-rangeSlider.prototype.next = function() {};
 function rangeSlider(rangeIndicator, stepSluts = [], callback = function() {}) {
+  var rangeSlider = this;
   var mousedown = false;
   var rangeIndicator = document.getElementById(rangeIndicator);
   var inputRangeSlider = rangeIndicator.querySelector(".input-range_slider");
   var min = inputRangeSlider.getAttribute("aria-valuemin");
   var max = inputRangeSlider.getAttribute("aria-valuemax");
+  var now = inputRangeSlider.getAttribute("aria-valuenow");
   var amountElement = rangeIndicator.querySelector(".loanAmountValue");
   var sliderElement = rangeIndicator.querySelector(
     ".input-range_slider-container"
@@ -202,26 +206,36 @@ function rangeSlider(rangeIndicator, stepSluts = [], callback = function() {}) {
     },
     true
   );
-  var _updateSlider = function(move, oldAmount, newAmount, stepsObj) {
+  function _updateSlider(newAmount, stepsObj, forceUpdate) {
+    var amountRange = max - min;
     if (stepsObj.length > 0) {
-      var amountRange = max - min;
       for (var i = 0; i < stepsObj.length; i++) {
         if (stepsObj[i].from <= newAmount && stepsObj[i].to > newAmount) {
           var stepBaseAmount = Math.round(
             Number(newAmount) / Number(stepsObj[i].step)
           );
           newAmount = stepBaseAmount * stepsObj[i].step;
-          move = newAmount / amountRange;
+          nextAmount = (stepBaseAmount + 1) * stepsObj[i].step;
+          prevAmount = (stepBaseAmount - 1) * stepsObj[i].step;
         }
       }
     }
+    var move = newAmount / amountRange;
+    if (move >= 1) move = 1;
+    if (move <= 0) move = 0;
     sliderTrack.style.width = Number(Math.ceil(move * 100)) + "%";
     sliderElement.style.left = Number(Math.ceil(move * 100)) + "%";
     inputRangeSlider.setAttribute("aria-valuenow", newAmount);
     amountElement.innerText = newAmount;
+    rangeSlider.stepBack = function() {
+      _updateSlider(prevAmount, stepsObj, true);
+    };
+    rangeSlider.stepForward = function() {
+      _updateSlider(nextAmount, stepsObj, true);
+    };
     callback(newAmount);
-  };
-  var _detectPosition = function(e, isTouch) {
+  }
+  function _detectPosition(e, isTouch) {
     var x;
     if (isTouch) {
       x = e.touches[0].clientX;
@@ -232,20 +246,19 @@ function rangeSlider(rangeIndicator, stepSluts = [], callback = function() {}) {
     var newLeftPosition =
       (sliderElement.offsetLeft + moveX) / sliderTrackBG.clientWidth;
     var newAmount = 0;
-    var oldAmount = inputRangeSlider.getAttribute("aria-valuenow");
     if (mousedown) {
-      if (newLeftPosition < 1 && newLeftPosition > 0) {
+      if (newLeftPosition <= 1 && newLeftPosition > 0) {
         newAmount = Number(min) + parseInt((max - min) * newLeftPosition);
-        _updateSlider(newLeftPosition, oldAmount, newAmount, stepSluts);
-      } else if (newLeftPosition === 1) {
+        _updateSlider(newAmount, stepSluts, false);
+      } else if (newLeftPosition >= 1) {
         newAmount = max;
-        _updateSlider(1, oldAmount, newAmount, []);
+        _updateSlider(newAmount, stepSluts, false);
       } else if (newLeftPosition <= 0) {
         newAmount = min;
-        _updateSlider(0, oldAmount, newAmount, []);
+        _updateSlider(newAmount, stepSluts, false);
       }
     }
-  };
+  }
   document.addEventListener(
     "mousemove",
     function(e) {
@@ -260,13 +273,16 @@ function rangeSlider(rangeIndicator, stepSluts = [], callback = function() {}) {
     },
     true
   );
+  _updateSlider(now, stepSluts, true);
 }
 
 var organizationValidation = function(number) {
   number = String(number).trim();
   if (number) {
-    if (number.length !== 10 || Number(number)) {
-      return "Ange ditt korrekta Organisationsnummer exampel : 556016-0451)";
+    if (number.length !== 10 || Number(number) === "NaN") {
+      console.log(number.length);
+      console.log(number.length);
+      return "Ange ditt korrekta Organisationsnummer (exampel : 5560160451)";
     } else {
       return "";
     }
@@ -276,16 +292,87 @@ var organizationValidation = function(number) {
 };
 
 function submitForm() {
-  var range = document
+  var isFormValidArr = [];
+  var url = "https://ponture.com/app/loan";
+  var price = document
     .getElementsByName("priceRange")[0]
     .getAttribute("aria-valuenow");
   var month = document
     .getElementsByName("monthRange")[0]
     .getAttribute("aria-valuenow");
-  var options = document.querySelector("#usageOptions .usageBtn");
-  var optionsDescription = document.getElementsByName(
+  var options = optionsArr;
+  var otherDescription = document.getElementsByName(
     "otherOptionDescription"
-  )[0].value;
-  var organizationNumber = document.getElementsByName("organizationNumber")[0]
-    .value;
+    )[0];
+    var otherDescElem = document.getElementById("otherOption_input");
+  var organizationNumber = document.getElementsByName("organizationNumber")[0];
+  var organNumberElem = document.getElementById("organizationNumber_input");
+  ///////////////////// validations
+  //other description
+  if (options.indexOf("other") > -1) {
+    if (otherDescription.value.trim().length === 0) {
+      otherDescElem.classList.add("--invalid");
+      isFormValidArr.add("otherDesc");
+    } else {
+      otherDescElem.classList.remove("--invalid");
+      isFormValidArr.remove("otherDesc");
+    }
+  }
+  //organization number validation
+  var isOrganizationNumberValid = organizationValidation(
+    organizationNumber.value
+  );
+  if (isOrganizationNumberValid.length > 0) {
+    organNumberElem.classList.add("--invalid");
+    organNumberElem.getElementsByClassName(
+      "validation-message"
+    )[0].innerText = isOrganizationNumberValid;
+    isFormValidArr.add("organNum");
+  } else {
+    organNumberElem.classList.remove("--invalid");
+    isFormValidArr.remove("organNum");
+  }
+  if (isFormValidArr.length === 0) {
+    var need = options.join(",");
+    var params = "?";
+    params += "amount=" + price;
+    params += "&amourtizationPeriod=" + month;
+    params += "&need=" + need;
+    if (options.indexOf("other") > -1) {
+      params += "&needDescription=" + otherDescription.value;
+    }
+    params += "&organizationNo=" + organizationNumber.value;
+    url = url + params;
+    window.open(url, "_blank");
+  }
 }
+//Prototypes
+Array.prototype.remove = function(value) {
+  if (this.indexOf(value) > -1) {
+    this.splice(this.indexOf(value), 1);
+    return this;
+  } else {
+    return this;
+  }
+};
+Array.prototype.add = function(value) {
+  this.push(value);
+  return this;
+};
+
+//Do actions after page load
+document.addEventListener("DOMContentLoaded", function() {
+  fillUsageOptions(usageObj);
+  for (var i = 0; i < usageBtns.length; i++) {
+    usageBtns[i].onclick = function() {
+      toggleOption(this, function(element, isActive) {
+        var name = element.getAttribute("name");
+        if (isActive) {
+          optionsArr = optionsArr.add(name);
+        } else {
+          optionsArr = optionsArr.remove(name);
+        }
+      });
+    };
+  }
+});
