@@ -308,6 +308,7 @@ html::-moz-scrollbar-thumb:hover {
   margin: auto;
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
 .pon_form p {
@@ -355,11 +356,10 @@ html::-moz-scrollbar-thumb:hover {
 .pon_applyform {
   display: flex;
   flex-direction: column;
-  border-radius: 3px;
+  border-radius: 0;
   background: #fff;
   background: var(--bl-applyform-bg);
-  box-shadow: 0 0 3px #d3d3d3;
-  box-shadow: var(--bl-applyform-box-shadow);
+  box-shadow: none;
 }
 
 .pon_input {
@@ -591,7 +591,7 @@ html::-moz-scrollbar-thumb:hover {
 @media (max-width: 576px) {
   .pon_form {
     width: 100%;
-    margin: 7px 0;
+    margin: 0;
   }
   .usageBtn {
     width: calc(50% - 20px);
@@ -600,8 +600,8 @@ html::-moz-scrollbar-thumb:hover {
 
 @media (min-width: 576px) {
   .pon_form {
-    width: 92%;
-    margin: 4%;
+    width: 100%;
+    margin: 0;
   }
   .usageBtn {
     width: calc(33.33% - 20px);
@@ -610,8 +610,8 @@ html::-moz-scrollbar-thumb:hover {
 
 @media (min-width: 768px) {
   .pon_form {
-    width: 768px;
-    margin: 40px auto;
+    width: 100%;
+    margin: 0 auto;
   }
   .usageBtn {
     width: calc(33.33% - 20px);
@@ -620,8 +620,8 @@ html::-moz-scrollbar-thumb:hover {
 
 @media (min-width: 992px) {
   .pon_form {
-    width: 768px;
-    margin: 40px auto;
+    width: 100%;
+    margin: 0 auto;
   }
   .usageBtn {
     width: calc(25% - 20px);
@@ -630,8 +630,8 @@ html::-moz-scrollbar-thumb:hover {
 
 @media (min-width: 1200px) {
   .pon_form {
-    width: 768px;
-    margin: 40px auto;
+    width: 100%;
+    margin: 0 auto;
   }
   .usageBtn {
     width: calc(25% - 20px);

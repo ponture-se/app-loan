@@ -11,8 +11,6 @@ $link = $base_url.$path;
 $parsed_url = parse_url(strval($link));
 @$partner_name = explode("/",$parsed_url['path'])[2];
 $partner_form_url = "./forms/$partner_name/index.html";
-  
-
 $headers = @get_headers($partner_form_url); 
    
 if($headers && strpos( $headers[0], '200')) { 
