@@ -41,6 +41,12 @@
 .icon-add:before {
   content: "\e92e";
 }
+.icon-envelope:before{
+  content:"\e930";
+}
+.icon-phone:before{
+  content:"\e932";
+}
 .fadeIn {
   -webkit-animation-name: fadeIn;
   animation-name: fadeIn;
@@ -149,7 +155,7 @@
 }
 
 .btn.--success {
-  background: #42ccad;
+  background: #21a0e0;
   background: var(--my-btn-success-bg);
   color: #fff;
   color: var(--my-btn-success-color);
@@ -164,12 +170,12 @@
 
 .btn.--success:focus {
   outline: 0;
-  box-shadow: 0 0 5px #42ccad;
+  box-shadow: 0 0 5px #21a0e0;
   box-shadow: var(--my-btn-success-shadow);
 }
 
 .btn.--success:hover {
-  background: #42ccad;
+  background: #21a0e0;
   background: var(--my-btn-success-hover-bg);
 }
 
@@ -339,7 +345,7 @@ html::-moz-scrollbar-thumb:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #42ccad;
+  background: #21a0e0;
   background: var(--bl-applyform-header-circle-bg);
   font-size: 25px;
   font-size: var(--bl-applyform-header-circle-fontSize);
@@ -391,12 +397,12 @@ html::-moz-scrollbar-thumb:hover {
 }
 
 .pon_input.--sliderInput .pon_rangeSliderDOM .input-range_track--active {
-  background: #42ccad;
+  background: #21a0e0;
   background: var(--input-range-active-bg);
 }
 
 .pon_input.--sliderInput .pon_rangeSliderDOM .input-range_slider {
-  background: #42ccad;
+  background: #21a0e0;
   background: var(--input-range-bg);
   border: 1px solid grey;
   width: 28px !important;
@@ -475,7 +481,7 @@ html::-moz-scrollbar-thumb:hover {
   padding: 0 5px;
   border-radius: 5px;
   -webkit-border-radius: 5px;
-  outline-color: #42ccad;
+  outline-color: #21a0e0;
 }
 
 .pon_input_element .element-group_right {
@@ -524,7 +530,7 @@ html::-moz-scrollbar-thumb:hover {
 }
 
 .bl .options .usageBtn.--active {
-  border: 2px solid #42ccad;
+  border: 2px solid #21a0e0;
 }
 .bl .options .usageBtn.--active:before {
   font-family: icomoon !important;
@@ -538,7 +544,7 @@ html::-moz-scrollbar-thumb:hover {
   left: -10px;
   top: -10px;
   text-align: center;
-  background-color: #42ccad;
+  background-color: #21a0e0;
   border-radius: 50%;
   -webkit-transition-duration: 0.2s;
   transition-duration: 0.2s;
@@ -555,7 +561,7 @@ html::-moz-scrollbar-thumb:hover {
   position: absolute;
   left: -10px;
   top: -10px;
-  background: #42ccad;
+  background: #21a0e0;
   color: #fff;
   font-size: 15px;
   display: flex;
@@ -587,6 +593,16 @@ html::-moz-scrollbar-thumb:hover {
   padding-top: 3px;
   color: grey;
 }
+.userInputs{
+  display:flex;
+  flex-direction:row;
+}
+.userInputs .pon_input{
+  width:100%;
+}
+.userInputs .pon_input:nth-child(2n){
+  margin:var(--input-even-margin);
+}
 
 @media (max-width: 576px) {
   .pon_form {
@@ -607,7 +623,14 @@ html::-moz-scrollbar-thumb:hover {
     width: calc(33.33% - 20px);
   }
 }
-
+@media(max-width: 768px){
+  .userInputs{
+    flex-direction:column;
+  }
+  .userInputs .pon_input:nth-child(2n){
+    margin:0;
+  }
+}
 @media (min-width: 768px) {
   .pon_form {
     width: 100%;
