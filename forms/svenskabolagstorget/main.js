@@ -273,50 +273,55 @@ function rangeSlider(rangeIndicator, stepSluts = [], callback = function() {}) {
   _updateSlider(now, stepSluts, true);
 }
 
-var inputValidation = function(type,value){
+var inputValidation = function(type, value) {
   var msgTxt = "";
-  switch(type){
+  switch (type) {
     case "email":
-        var regex= new RegExp(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/);
-        if (value.length > 0) {
-          if (!regex.test(value)) {
-            msgTxt = "email är felaktigt.";
-          } else {
-            msgTxt = "";
-          }
+      var regex = new RegExp(
+        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+      );
+      if (value.length > 0) {
+        if (!regex.test(value)) {
+          msgTxt = "Felaktig e-post. Ange ditt e-post.";
         } else {
-          msgTxt = "Ange din e-postaddress.";
+          msgTxt = "";
         }
-    break;
+      } else {
+        msgTxt = "Fältet är obligatoriskt.";
+      }
+      break;
     case "phone":
-        var regex= new RegExp(/^(\+?46|0|0046)[\s\-]?[1-9][\s\-]?[02369]([\s\-]?\d){6,7}$/);
-        if (value.length > 0) {
-          if (!regex.test(value)) {
-            msgTxt = "Felaktig telefon. Ange ditt telefon.";
-          } else {
-            msgTxt = "";
-          }
+      var regex = new RegExp(
+        /^(\+?46|0|0046)[\s\-]?[1-9][\s\-]?[0-9]([\s\-]?\d){6,7}$/
+      );
+      if (value.length > 0) {
+        if (!regex.test(value)) {
+          msgTxt = "Felaktig telefon. Ange ditt telefon.";
         } else {
-          msgTxt = "Ange ditt telefonnummer.";
+          msgTxt = "";
         }
-    break;
+      } else {
+        msgTxt = "Fältet är obligatoriskt.";
+      }
+      break;
     case "organizationNumber":
-        var regex= new RegExp(/^([0-9]){6}-?([0-9]){4}$/);
-        if (value.length > 0) {
-          if (!regex.test(value)) {
-            msgTxt = "Ange ditt korrekta Organisationsnummer (exampel : 5560160451).";
-          } else {
-            msgTxt = "";
-          }
+      var regex = new RegExp(/^([0-9]){6}-?([0-9]){4}$/);
+      if (value.length > 0) {
+        if (!regex.test(value)) {
+          msgTxt =
+            "Ange ditt korrekta organisationsnummer (exampel : 5560160451).";
         } else {
-          msgTxt = "Organisations nummer krävs.";
+          msgTxt = "";
         }
-    break;
+      } else {
+        msgTxt = "Ditt organisationsnummer krävs.";
+      }
+      break;
     default:
       break;
   }
   return msgTxt;
-}
+};
 function submitForm() {
   var isFormValidArr = [];
   var url = "https://www.ponture.com/app/loan";
@@ -349,15 +354,12 @@ function submitForm() {
     }
   }
   //organization number validation
-  var isOrganizationNumberValid = inputValidation("organizationNumber",
+  var isOrganizationNumberValid = inputValidation(
+    "organizationNumber",
     organizationNumber.value
   );
-  var isEmailValid = inputValidation("email",
-    email.value
-  );
-  var isPhoneValid = inputValidation("phone",
-    phone.value
-  );
+  var isEmailValid = inputValidation("email", email.value);
+  var isPhoneValid = inputValidation("phone", phone.value);
   if (isOrganizationNumberValid.length > 0) {
     organNumberElem.classList.add("--invalid");
     organNumberElem.getElementsByClassName(
@@ -389,7 +391,6 @@ function submitForm() {
     phoneElem.classList.remove("--invalid");
     isFormValidArr.remove("phone");
   }
-
 
   if (isFormValidArr.length === 0) {
     var need = options.join(",");
