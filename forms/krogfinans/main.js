@@ -208,7 +208,6 @@ function rangeSlider(rangeIndicator, stepSluts = [], callback = function() {}) {
     var maxMove = (max - min) / amountRange;
     var move = 0;
     var step = minMove;
-
     if (stepsObj.length > 0) {
       for (var i = 0; i < stepsObj.length; i++) {
         if (stepsObj[i].from <= newAmount && stepsObj[i].to > newAmount) {
@@ -274,19 +273,55 @@ function rangeSlider(rangeIndicator, stepSluts = [], callback = function() {}) {
   _updateSlider(now, stepSluts, true);
 }
 
-var organizationValidation = function(number) {
-  number = String(number).trim();
-  if (number) {
-    if (number.length !== 10 || Number(number) === "NaN") {
-      return "Ange ditt korrekta Organisationsnummer (exampel : 5560160451)";
-    } else {
-      return "";
-    }
-  } else {
-    return "Organisations nummer krävs";
+var inputValidation = function(type, value) {
+  var msgTxt = "";
+  switch (type) {
+    case "email":
+      var regex = new RegExp(
+        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+      );
+      if (value.length > 0) {
+        if (!regex.test(value)) {
+          msgTxt = "Felaktig e-post. Ange ditt e-post.";
+        } else {
+          msgTxt = "";
+        }
+      } else {
+        msgTxt = "Fältet är obligatoriskt.";
+      }
+      break;
+    case "phone":
+      var regex = new RegExp(
+        /^(\+?46|0|0046)[\s\-]?[1-9][\s\-]?[0-9]([\s\-]?\d){6,7}$/
+      );
+      if (value.length > 0) {
+        if (!regex.test(value)) {
+          msgTxt = "Felaktig telefon. Ange ditt telefon.";
+        } else {
+          msgTxt = "";
+        }
+      } else {
+        msgTxt = "Fältet är obligatoriskt.";
+      }
+      break;
+    case "organizationNumber":
+      var regex = new RegExp(/^([0-9]){6}-?([0-9]){4}$/);
+      if (value.length > 0) {
+        if (!regex.test(value)) {
+          msgTxt =
+            "Ange ditt korrekta organisationsnummer (exampel : 5560160451).";
+        } else {
+          msgTxt = "";
+        }
+      } else {
+        msgTxt = "Ditt organisationsnummer krävs.";
+      }
+      break;
+    default:
+      break;
   }
+  return msgTxt;
 };
-
 function submitForm() {
   var isFormValidArr = [];
   var url = "https://www.ponture.com/app/loan";
@@ -301,8 +336,12 @@ function submitForm() {
     "otherOptionDescription"
   )[0];
   var otherDescElem = document.getElementById("otherOption_input");
-  var organizationNumber = document.getElementsByName("organizationNumber")[0];
   var organNumberElem = document.getElementById("organizationNumber_input");
+  var emailElem = document.getElementById("email_input");
+  var phoneElem = document.getElementById("phone_input");
+  var organizationNumber = document.getElementsByName("organizationNumber")[0];
+  var email = document.getElementsByName("email")[0];
+  var phone = document.getElementsByName("phone")[0];
   ///////////////////// validations
   //other description
   if (options.indexOf("other") > -1) {
@@ -315,9 +354,12 @@ function submitForm() {
     }
   }
   //organization number validation
-  var isOrganizationNumberValid = organizationValidation(
+  var isOrganizationNumberValid = inputValidation(
+    "organizationNumber",
     organizationNumber.value
   );
+  var isEmailValid = inputValidation("email", email.value);
+  var isPhoneValid = inputValidation("phone", phone.value);
   if (isOrganizationNumberValid.length > 0) {
     organNumberElem.classList.add("--invalid");
     organNumberElem.getElementsByClassName(
@@ -328,6 +370,28 @@ function submitForm() {
     organNumberElem.classList.remove("--invalid");
     isFormValidArr.remove("organNum");
   }
+  if (isEmailValid.length > 0) {
+    emailElem.classList.add("--invalid");
+    emailElem.getElementsByClassName(
+      "validation-message"
+    )[0].innerText = isEmailValid;
+    isFormValidArr.add("email");
+  } else {
+    emailElem.classList.remove("--invalid");
+    isFormValidArr.remove("email");
+  }
+
+  if (isPhoneValid.length > 0) {
+    phoneElem.classList.add("--invalid");
+    phoneElem.getElementsByClassName(
+      "validation-message"
+    )[0].innerText = isPhoneValid;
+    isFormValidArr.add("phone");
+  } else {
+    phoneElem.classList.remove("--invalid");
+    isFormValidArr.remove("phone");
+  }
+
   if (isFormValidArr.length === 0) {
     var need = options.join(",");
     var params = "?";
@@ -338,6 +402,8 @@ function submitForm() {
       params += "&needDescription=" + otherDescription.value;
     }
     params += "&organizationNo=" + organizationNumber.value;
+    params += "&email=" + email.value;
+    params += "&phoneNumber=" + phone.value;
     url = url + params;
     window.open(url, "_blank");
   }
@@ -355,7 +421,6 @@ Array.prototype.add = function(value) {
   this.push(value);
   return this;
 };
-
 //Do actions after page load
 document.addEventListener("DOMContentLoaded", function() {
   fillUsageOptions(usageObj);

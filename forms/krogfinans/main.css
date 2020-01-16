@@ -2,8 +2,8 @@
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  background: #3f51b5;
-  border: 1px solid #3f51b5;
+  background: #42ccad;
+  border: 1px solid #42ccad;
   box-shadow: none !important;
   border-radius: 50%;
   cursor: pointer;
@@ -87,7 +87,7 @@
   top: 50%;
 }
 .input-range_track--active {
-  background: #3f51b5;
+  background: #42ccad;
 }
 .input-range {
   height: 1rem;

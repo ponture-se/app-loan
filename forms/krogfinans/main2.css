@@ -41,6 +41,12 @@
 .icon-add:before {
   content: "\e92e";
 }
+.icon-envelope:before {
+  content: "\e930";
+}
+.icon-phone:before {
+  content: "\e932";
+}
 .fadeIn {
   -webkit-animation-name: fadeIn;
   animation-name: fadeIn;
@@ -169,8 +175,8 @@
 }
 
 .btn.--success:hover {
-  background: #42ccad;
-  background: var(--my-btn-success-hover-bg);
+  background: #3fb599;
+  /* background: var(--my-btn-success-hover-bg); */
 }
 
 * {
@@ -587,6 +593,16 @@ html::-moz-scrollbar-thumb:hover {
   padding-top: 3px;
   color: grey;
 }
+.userInputs {
+  display: flex;
+  flex-direction: row;
+}
+.userInputs .pon_input {
+  width: 100%;
+}
+.userInputs .pon_input:nth-child(2n) {
+  margin: var(--input-even-margin);
+}
 
 @media (max-width: 576px) {
   .pon_form {
@@ -607,7 +623,14 @@ html::-moz-scrollbar-thumb:hover {
     width: calc(33.33% - 20px);
   }
 }
-
+@media (max-width: 768px) {
+  .userInputs {
+    flex-direction: column;
+  }
+  .userInputs .pon_input:nth-child(2n) {
+    margin: 0;
+  }
+}
 @media (min-width: 768px) {
   .pon_form {
     width: 100%;
