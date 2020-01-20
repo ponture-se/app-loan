@@ -1,47 +1,17 @@
 var usageObj = [
   {
+    API_Name: "general_liquidity",
+    Label: "Generell likviditet",
+    isDefault: false
+  },
+  {
     API_Name: "hire_staff",
     Label: "Anställa personal",
     isDefault: false
   },
   {
-    API_Name: "acquisitions_purchase",
-    Label: "Förvärv Köp",
-    isDefault: false
-  },
-  {
-    API_Name: "expansion",
-    Label: "Expansion",
-    isDefault: false
-  },
-  {
-    API_Name: "finance_debts",
-    Label: "Finansiera skulder",
-    isDefault: false
-  },
-  {
-    API_Name: "pay_off_debts",
-    Label: "Betala av skulder",
-    isDefault: false
-  },
-  {
     API_Name: "purchase_renting_equipment",
-    Label: "Köp / hyra utrustning",
-    isDefault: false
-  },
-  {
-    API_Name: "purchase_of_business",
-    Label: "Inköp av företag",
-    isDefault: false
-  },
-  {
-    API_Name: "purchase_of_inventory",
-    Label: "Köp av lager",
-    isDefault: false
-  },
-  {
-    API_Name: "real_estate_financing",
-    Label: "Fastighetsfinansiering",
+    Label: "Köpa / hyra utrustning",
     isDefault: false
   },
   {
@@ -50,13 +20,13 @@ var usageObj = [
     isDefault: false
   },
   {
-    API_Name: "renting_office",
-    Label: "Hyra kontor",
+    API_Name: "website_marketing",
+    Label: "Webbplats/Marknadsföring",
     isDefault: false
   },
   {
-    API_Name: "seasonal_financing",
-    Label: "Säsongsfinansiering",
+    API_Name: "renting_premises",
+    Label: "Hyra lokal",
     isDefault: false
   },
   {
@@ -65,20 +35,59 @@ var usageObj = [
     isDefault: false
   },
   {
-    API_Name: "marketing",
-    Label: "Marknadsföring",
+    API_Name: "pay_off_debts",
+    Label: "Betala av skulder",
     isDefault: false
   },
   {
-    API_Name: "general_liquidity",
-    Label: "Generell likviditet",
-    isDefault: true
+    API_Name: "purchase_of_inventory",
+    Label: "Köpa lager",
+    isDefault: false
+  },
+  {
+    API_Name: "seasonal_financing",
+    Label: "Säsongsfinansiering",
+    isDefault: false
+  },
+  {
+    API_Name: "application_for_permit",
+    Label: "Ansökan om tillstånd",
+    isDefault: false
+  },
+  {
+    API_Name: "construction_project",
+    Label: "Byggnationsprojekt",
+    isDefault: false
+  },
+  {
+    API_Name: "expansion",
+    Label: "Expansion",
+    isDefault: false
+  },
+  {
+    API_Name: "purchase_of_business",
+    Label: "Företagsförvärv",
+    isDefault: false
+  },
+  {
+    API_Name: "purchase_of_real_estate",
+    Label: "Köp av fastighet",
+    isDefault: false
+  },
+  {
+    API_Name: "switch_loan",
+    Label: "Lösa/Byta lån",
+    isDefault: false
+  },
+  {
+    API_Name: "loan_consolidation",
+    Label: "Samla lån",
+    isDefault: false
   },
   {
     API_Name: "other",
     Label: "Övrigt",
-    isDefault: false,
-    writable: true
+    isDefault: false
   }
 ];
 var priceStepsObj = [
@@ -322,6 +331,15 @@ var inputValidation = function(type, value) {
   }
   return msgTxt;
 };
+function urlParser(url) {
+  let regex = /[?&]([^=#]+)=([^&#]*)/g,
+    params = {},
+    match;
+  while ((match = regex.exec(url))) {
+    params[match[1]] = match[2];
+  }
+  return params;
+}
 function submitForm() {
   var isFormValidArr = [];
   var url = "https://www.ponture.com/app/loan";
@@ -342,6 +360,7 @@ function submitForm() {
   var organizationNumber = document.getElementsByName("organizationNumber")[0];
   var email = document.getElementsByName("email")[0];
   var phone = document.getElementsByName("phone")[0];
+  var urlParams = urlParser(window.location.href);
   ///////////////////// validations
   //other description
   if (options.indexOf("other") > -1) {
@@ -404,10 +423,23 @@ function submitForm() {
     params += "&organizationNo=" + organizationNumber.value;
     params += "&email=" + email.value;
     params += "&phoneNumber=" + phone.value;
+
+    //UTMs
+    params += urlParams.utm_source ? "&utm_source=" + urlParams.utm_source : "";
+    params += urlParams.utm_medium ? "&utm_medium=" + urlParams.utm_medium : "";
+    params += urlParams.utm_campaign
+      ? "&utm_campaign=" + urlParams.utm_campaign
+      : "";
+    params += urlParams.utm_content
+      ? "&utm_content=" + urlParams.utm_content
+      : "";
+
+    //Redirecting
     url = url + params;
     window.open(url, "_blank");
   }
 }
+
 //Prototypes
 Array.prototype.remove = function(value) {
   if (this.indexOf(value) > -1) {
