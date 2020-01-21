@@ -87,7 +87,8 @@ var usageObj = [
   {
     API_Name: "other",
     Label: "Övrigt",
-    isDefault: false
+    isDefault: false,
+    writable: true
   }
 ];
 var priceStepsObj = [
