@@ -426,14 +426,16 @@ function submitForm() {
     params += "&phoneNumber=" + phone.value;
 
     //UTMs
-    params += urlParams.utm_source ? "&utm_source=" + urlParams.utm_source : "";
-    params += urlParams.utm_medium ? "&utm_medium=" + urlParams.utm_medium : "";
-    params += urlParams.utm_campaign
-      ? "&utm_campaign=" + urlParams.utm_campaign
-      : "";
-    params += urlParams.utm_content
-      ? "&utm_content=" + urlParams.utm_content
-      : "";
+    params +=
+      "&utm_source=krogdirekt&utm_medium=onlineform&utm_campaign=spartner&utm_content=appform";
+    // params += urlParams.utm_source ? "&utm_source=" + urlParams.utm_source : "";
+    // params += urlParams.utm_medium ? "&utm_medium=" + urlParams.utm_medium : "";
+    // params += urlParams.utm_campaign
+    //   ? "&utm_campaign=" + urlParams.utm_campaign
+    //   : "";
+    // params += urlParams.utm_content
+    //   ? "&utm_content=" + urlParams.utm_content
+    //   : "";
 
     //Redirecting
     url = url + params;
